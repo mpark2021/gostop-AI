@@ -1,6 +1,6 @@
 import random
-from Player import Player
-from Board import Board
+from Game.Player import Player
+from Game.Board import Board
 
 class AI:
     @staticmethod
