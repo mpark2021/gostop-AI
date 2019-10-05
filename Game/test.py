@@ -8,7 +8,7 @@ from Game.Board import Board
 
 
 if __name__ == "__main__":
-    from Library import Library
+    from Game.Library import Library
     library = Library()
     library.shuffle()
     p1 = Player("A")
