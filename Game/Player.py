@@ -1,4 +1,4 @@
-from Score import Score
+from Game.Score import Score
 
 
 class Player:

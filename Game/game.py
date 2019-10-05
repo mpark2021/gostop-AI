@@ -1,13 +1,13 @@
-from Library import Library
-from Board import Board
-from Player import Player
-from Card import Card
-from Score import Score
-from AI import AI
+from Game.Library import Library
+from Game.Board import Board
+from Game.Player import Player
+from Game.Card import Card
+from Game.Score import Score
+from Game.AI import AI
 import random
-from Encoder import Encoder
-from calculator import Calculator
-import GoStopConstants as Const
+from Game.Encoder import Encoder
+from Game.calculator import Calculator
+import Game.GoStopConstants as Const
 
 
 class Game:

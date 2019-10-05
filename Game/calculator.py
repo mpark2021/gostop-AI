@@ -1,6 +1,6 @@
-import GoStopConstants as Const
-from Score import Score
-from Player import Player
+import Game.GoStopConstants as Const
+from Game.Score import Score
+from Game.Player import Player
 
 class Calculator:
     @staticmethod

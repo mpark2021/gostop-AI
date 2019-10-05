@@ -1,7 +1,7 @@
 # Shuffle (Use Fisher-Yates Shuffle)
 import random
-import GoStopConstants as Const
-from Card import Card
+import Game.GoStopConstants as Const
+from Game.Card import Card
 
 
 class Library:
