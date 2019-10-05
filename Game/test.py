@@ -1,8 +1,8 @@
-from Card import Card
-import GoStopConstants as Const
-from Player import Player
-from Library import Library
-from Board import Board
+from Game.Card import Card
+import Game.GoStopConstants as Const
+from Game.Player import Player
+from Game.Library import Library
+from Game.Board import Board
 
 
 

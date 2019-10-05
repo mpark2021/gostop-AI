@@ -1,5 +1,5 @@
-from Card import Card
-import GoStopConstants as Const
+from Game.Card import Card
+import Game.GoStopConstants as Const
 
 class Board:
     def __init__(self):

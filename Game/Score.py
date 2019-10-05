@@ -1,4 +1,4 @@
-import GoStopConstants as Const
+import Game.GoStopConstants as Const
 
 
 class Score:
