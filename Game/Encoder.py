@@ -1,6 +1,12 @@
 import Game.GoStopConstants as Const
+from Game.Card import Card
 
 class Encoder:
+    @staticmethod
+    def encode_played(played: Card):
+        m, i = played.get_raw()
+        return (m-1) * 4 + i
+
     @staticmethod
     def encode(player, board, my_score, opp_score):
         result = []
