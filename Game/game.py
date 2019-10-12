@@ -225,7 +225,7 @@ if __name__ == "__main__":
         os.chdir(version)
 
         game = Game(False)
-        game.run_with_encode(10)
+        game.run_with_encode(1000)
 
     except OSError:
         print("Failed to create directory")
