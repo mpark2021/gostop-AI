@@ -108,3 +108,6 @@ venv.bak/
 
 # mac folder
 .DS_Store
+
+# data
+/Game/version*
