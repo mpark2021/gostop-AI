@@ -11,19 +11,25 @@ import Game.GoStopConstants as Const
 
 
 class Game:
-    def __init__(self, p1_name, p2_name, number=1, is_user=True):
+    def __init__(self, is_user=True):
+        self._board_record = []
+        self._played_record = []
+
+        self._is_user = is_user
+        self._x_filename = "x_game.txt"
+        self._y_filename = "y_game.txt"
+
+        self._reset()
+
+    def _reset(self):
         self._library = Library()
         self._board = Board()
-        self._is_user = is_user
-        self._encoder = Encoder()
-        self._filename = "game"+str(number)+".txt"
-
-        self._player1 = Player(p1_name)
-        self._player2 = Player(p2_name)
+        self._player1 = Player("A")
+        self._player2 = Player("B")
         self._players = [self._player1, self._player2]
         self._scores = [Score(), Score()]
 
-        self._turn_side = random.randint(0,1) # if 0, player 1 starts first
+        self._turn_side = random.randint(0, 1)  # if 0, player 1 starts first
 
         if self._turn_side == 0:
             print("Player First")
@@ -35,7 +41,9 @@ class Game:
             self._player2.draw(self._library.draw())
         for i in range(6):
             self._board.put(self._library.draw())
-        print(self)
+
+        if self._is_user:
+            print(self)
 
     def __str__(self):
         s = ""
@@ -46,47 +54,66 @@ class Game:
         s += str(self._player1) + "\n"
         return s
 
+    def run_with_encode(self, num_iter):
+        self._board_record = []
+        self._played_record = []
+
+        for i in range(num_iter):
+            self._reset()
+            self.run()
+
+        with open(self._x_filename, "w") as f:
+            for line in self._board_record:
+                f.write(line)
+
+        with open(self._y_filename, "w") as f:
+            for played in self._played_record:
+                f.write(str(played) + "\n")
+
+
     def run(self):
-        with open(self._filename, "w") as f:
 
-            is_last = False
-            winner = None
+        record = [[], []]
+        played = [[], []]
 
-            while len(self._library) > 0:
-                encoded = Encoder.encode(self._players[1], self._board, self._scores[1], self._scores[0])
-                encoded.insert(0, self._turn_side)
-                f.write(Encoder.to_string(encoded))
+        is_last = False
+        winner = None
 
-                played_card = None
-                if self._players[self._turn_side].get_hand_count() > 0:
-                    if self._turn_side == 0 and self._is_user:
-                        played_card = self.user_input()
-                    else:
-                        played_card = AI.play(self._players[self._turn_side], self._board)
-                drew = self._library.draw()
+        while len(self._library) > 0:
+            encoded = Encoder.encode(self._players[1], self._board, self._scores[1], self._scores[0])
+            # encoded.insert(0, self._turn_side) (lstm때 쓸 수 도 있음)
 
-                if played_card is not None:
-                    self._board.put(played_card)
-                self._board.put(drew)
+            played_card = None
+            if self._players[self._turn_side].get_hand_count() > 0:
+                if self._turn_side == 0 and self._is_user:
+                    played_card = self.user_input()
+                else:
+                    played_card = AI.play(self._players[self._turn_side], self._board)
+            drew = self._library.draw()
 
-                self.update(played_card, drew)
+            if played_card is not None:
+                self._board.put(played_card)
+                record[self._turn_side].append(Encoder.to_string(encoded))
+                played[self._turn_side].append(Encoder.encode_played(played_card))
+            self._board.put(drew)
 
-                total_score, prev_total = self._calculate_score()
+            self.update(played_card, drew)
 
+            total_score, prev_total = self._calculate_score()
+
+            if self._is_user:
                 print(self)
 
-                if not self._check_go(total_score, prev_total):
-                    winner = self._turn_side
-                    break
+            if not self._check_go(total_score, prev_total):
+                winner = self._turn_side
+                break
 
-                self._change_player()
+            self._change_player()
 
-            encoded = Encoder.encode(self._players[1], self._board, self._scores[1], self._scores[0])
-            encoded.insert(0, self._turn_side)
-            f.write(Encoder.to_string(encoded))
-
-            self._print_winner(winner)
-            f.close()
+        self._print_winner(winner)
+        if winner is not None:
+            self._board_record.extend(record[winner])
+            self._played_record.extend(played[winner])
 
     def _calculate_score(self):
         gwang, ddi, gut, pi = Calculator.calculate(self._scores[self._turn_side])
@@ -193,13 +220,12 @@ if __name__ == "__main__":
     import os
     version = "version1"
     try:
-        if not os.path.exists("version1"):
+        if not os.path.exists(version):
             os.makedirs(version)
         os.chdir(version)
 
-        for i in range(10):
-            game = Game("Player A", "Player B", i+1, False)
-            game.run()
+        game = Game(False)
+        game.run_with_encode(10)
 
     except OSError:
         print("Failed to create directory")
