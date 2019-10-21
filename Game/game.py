@@ -31,20 +31,20 @@ class Game:
         self._scores = [Score(), Score()]
 
         self._turn_side = random.randint(0, 1)  # if 0, player 1 starts first
-
-        if self._turn_side == 0:
-            print("Player First")
-        else:
-            print("Player Second")
-        self._library.shuffle()
-        for i in range(10):
-            self._player1.draw(self._library.draw())
-            self._player2.draw(self._library.draw())
-        for i in range(8):
-            self._board.put(self._library.draw())
-
         if self._is_user:
-            print(self)
+            if self._turn_side == 0:
+                print("Player First")
+            else:
+                print("Player Second")
+            self._library.shuffle()
+            for i in range(10):
+                self._player1.draw(self._library.draw())
+                self._player2.draw(self._library.draw())
+            for i in range(8):
+                self._board.put(self._library.draw())
+
+            if self._is_user:
+                print(self)
 
     def __str__(self):
         s = ""
@@ -67,7 +67,7 @@ class Game:
             for line in self._board_record:
                 f.write(line.encode())
 
-        with open(self._y_filename, "w") as f:
+        with gzip.open(self._y_filename, "wb") as f:
             for played in self._played_record:
                 f.write(str(played) + "\n")
 
@@ -110,8 +110,8 @@ class Game:
                 break
 
             self._change_player()
-
-        self._print_winner(winner)
+        if self._is_user:
+            self._print_winner(winner)
         if winner is not None:
             self._board_record.extend(record[winner])
             self._played_record.extend(played[winner])
@@ -206,7 +206,8 @@ class Game:
                     scored.append(c)
                     match.remove(c)
                     for card in match:
-                        print(card)
+                        if self._is_user:
+                            print(card)
                     if self._turn_side == 0 and self._is_user:
                         selected = int(input("Choose one card: "))
                     else:
