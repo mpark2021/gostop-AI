@@ -1,22 +1,22 @@
 import numpy as np
-
+import gzip
 
 def parse(dir):
     x = []
     y = []
 
-    with open(dir+"/x_game.txt", "r") as f:
+    with gzip.open(dir+"/x_game.txt", "rb") as f:
         while True:
-            line = f.readline()
+            line = f.readline().decode()
             if not line:
                 break
             line = line[:-1]
             x_m = list(map(int, list(line)))
             x.append(x_m)
 
-    with open(dir+"/y_game.txt", "r") as f:
+    with gzip.open(dir+"/y_game.txt", "r") as f:
         while True:
-            line = f.readline()
+            line = f.readline().decode()
             if not line:
                 break
             line = line[:-1]
