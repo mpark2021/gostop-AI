@@ -65,7 +65,7 @@ class Game:
 
         with gzip.open(self._x_filename, "wb") as f:
             for line in self._board_record:
-                f.write(line.encode)
+                f.write(line.encode())
 
         with open(self._y_filename, "w") as f:
             for played in self._played_record:
