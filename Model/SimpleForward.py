@@ -1,6 +1,5 @@
 import keras
 
-
 def forward(model_path, weights_path, data):
     with open(model_path, "r") as f:
         json = f.read()
