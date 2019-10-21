@@ -8,6 +8,7 @@ import random
 from Game.Encoder import Encoder
 from Game.calculator import Calculator
 import Game.GoStopConstants as Const
+import gzip
 
 
 class Game:
@@ -36,10 +37,10 @@ class Game:
         else:
             print("Player Second")
         self._library.shuffle()
-        for i in range(7):
+        for i in range(10):
             self._player1.draw(self._library.draw())
             self._player2.draw(self._library.draw())
-        for i in range(6):
+        for i in range(8):
             self._board.put(self._library.draw())
 
         if self._is_user:
@@ -62,9 +63,9 @@ class Game:
             self._reset()
             self.run()
 
-        with open(self._x_filename, "w") as f:
+        with gzip.open(self._x_filename, "wb") as f:
             for line in self._board_record:
-                f.write(line)
+                f.write(line.encode)
 
         with open(self._y_filename, "w") as f:
             for played in self._played_record:
