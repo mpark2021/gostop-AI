@@ -23,10 +23,14 @@ def parse(dir):
             y_m = [int(y == int(line)) for y in range(48)]
             y.append(y_m)
 
-    x = np.asarray(x)
-    y = np.asarray(y)
 
-    return x, y
+    divider = int(len(x) * 0.7)
+    x_train = np.asarray(x[:divider])
+    x_eval = np.asarray(x[divider:])
+    y_train = np.asarray(y[:divider])
+    y_eval = np.asarray(y[divider:])
+
+    return x_train, y_train, x_eval, y_eval
 
 
 if __name__ == "__main__":
