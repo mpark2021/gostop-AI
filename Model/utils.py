@@ -32,6 +32,21 @@ def parse(dir):
 
     return x_train, y_train, x_eval, y_eval
 
+def select_accuracy_internal(x, y, y_pred, accuracy):
+    x_hand = np.split(x, [48, ], 1)[0]
+    y_pred_hand = x_hand * y_pred
+    return accuracy(y, y_pred_hand)
+
+
 
 if __name__ == "__main__":
-    parse("../Game/version1")
+    x, y, x_eval, y_eval = parse("../Game/version1")
+    x_acc_test = x[:10]
+    y_acc_test = y[:10]
+    y_acc_test_pred = np.random.random((10, 48))
+    import keras
+    import tensorflow as tf
+    acc = select_accuracy_internal(x_acc_test, y_acc_test, y_acc_test_pred, keras.metrics.accuracy)
+    sess = tf.Session()
+    value = sess.run(acc)
+    print(value)
