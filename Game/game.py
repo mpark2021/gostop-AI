@@ -36,15 +36,15 @@ class Game:
                 print("Player First")
             else:
                 print("Player Second")
-            self._library.shuffle()
-            for i in range(10):
-                self._player1.draw(self._library.draw())
-                self._player2.draw(self._library.draw())
-            for i in range(8):
-                self._board.put(self._library.draw())
+        self._library.shuffle()
+        for i in range(10):
+            self._player1.draw(self._library.draw())
+            self._player2.draw(self._library.draw())
+        for i in range(8):
+            self._board.put(self._library.draw())
 
-            if self._is_user:
-                print(self)
+        if self._is_user:
+            print(self)
 
     def __str__(self):
         s = ""
@@ -69,7 +69,7 @@ class Game:
 
         with gzip.open(self._y_filename, "wb") as f:
             for played in self._played_record:
-                f.write(str(played) + "\n")
+                f.write((str(played) + "\n").encode())
 
 
     def run(self):
