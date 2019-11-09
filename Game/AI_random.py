@@ -2,7 +2,7 @@ import random
 from Game.Player import Player
 from Game.Board import Board
 
-class AI:
+class AI_random:
     @staticmethod
     def play(player: Player, board: Board):
         for card in player._cards:
