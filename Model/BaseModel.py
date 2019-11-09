@@ -7,17 +7,17 @@ class BaseModel:
     def define_model(self) -> keras.Model:
         raise NotImplementedError
 
-    def run(self, x_train, y_train, x_eval, y_eval, batch_size = None, epochs=10):
+    def run(self, x_train, y_train, x_eval, y_eval, batch_size = None, epochs=3000):
         model = self.define_model()
         model.summary()
 
         def select_accuracy(y_true, y_pred):
 
-            return Model.utils.select_accuracy_internal(x_train, y_true, y_pred, keras.metrics.accuracy)
+            return Model.utils.select_accuracy_internal(x_train, y_true, y_pred, keras.metrics.categorical_accuracy)
 
         def select_accuracy_eval(y_true, y_pred):
 
-            return Model.utils.select_accuracy_internal(x_eval, y_true, y_pred, keras.metrics.accuracy)
+            return Model.utils.select_accuracy_internal(x_eval, y_true, y_pred, keras.metrics.categorical_accuracy)
 
         model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy", select_accuracy])
 
