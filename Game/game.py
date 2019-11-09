@@ -3,19 +3,22 @@ from Game.Board import Board
 from Game.Player import Player
 from Game.Card import Card
 from Game.Score import Score
-from Game.AI_random import AI_random
+from Game.AI import AI
 import random
 from Game.Encoder import Encoder
 from Game.calculator import Calculator
 import Game.GoStopConstants as Const
 import gzip
+import keras.backend as K
 
 
 class Game:
-    def __init__(self, is_user=True):
+    def __init__(self, is_user=True, current_version=1, current_generation=0):
         self._board_record = []
         self._played_record = []
 
+        self.cv = current_version
+        self.cg = current_generation
         self._is_user = is_user
         self._x_filename = "x_game.txt"
         self._y_filename = "y_game.txt"
@@ -23,6 +26,8 @@ class Game:
         self._reset()
 
     def _reset(self):
+        K.clear_session()
+        self.AI = [AI(self.cv, self.cg), AI(self.cv, max(self.cg - 1, 0))]
         self._library = Library()
         self._board = Board()
         self._player1 = Player("A")
@@ -81,15 +86,18 @@ class Game:
         winner = None
 
         while len(self._library) > 0:
-            encoded = Encoder.encode(self._players[1], self._board, self._scores[1], self._scores[0])
-            # encoded.insert(0, self._turn_side) (lstm때 쓸 수 도 있음)
+            encoded = Encoder.encode(self._players[self._turn_side], self._board, self._scores[self._turn_side],
+                                     self._scores[self._get_opp()])
+            # encoded.insert(0, self._turn_side)
 
             played_card = None
             if self._players[self._turn_side].get_hand_count() > 0:
                 if self._turn_side == 0 and self._is_user:
                     played_card = self.user_input()
                 else:
-                    played_card = AI_random.play(self._players[self._turn_side], self._board)
+                    played_card = self.AI[self._turn_side].play(self._players[self._turn_side], self._board,
+                                                                self._scores[self._turn_side], self._scores[self._get_opp()]
+                                                                )
             drew = self._library.draw()
 
             if played_card is not None:
@@ -162,7 +170,7 @@ class Game:
         else:
             is_last = len(self._library) <= 2
             opp_go = self._scores[self._get_opp()].get_go_count() > 0
-            return AI_random.ask_go(is_last, opp_go)
+            return self.AI[self._turn_side].ask_go(is_last, opp_go)
 
     def user_input(self) -> Card:
         try:
@@ -211,7 +219,7 @@ class Game:
                     if self._turn_side == 0 and self._is_user:
                         selected = int(input("Choose one card: "))
                     else:
-                        selected = AI_random.select(match)
+                        selected = self.AI[self._turn_side].select(match)
                     scored.append(match[selected])
 
         self._scores[self._turn_side].add(scored)
@@ -220,19 +228,24 @@ class Game:
 
 if __name__ == "__main__":
     import os
-    version = "Version1"
-    generation = "Generation0"
+    version = 1
+    generation = 1
+
+    version_path = "Version%d" % version
+    generation_path = "Generation%d" % generation
+
     try:
-        if not os.path.exists(version):
-            os.makedirs(version)
-        os.chdir(version)
+        if not os.path.exists(version_path):
+            os.makedirs(version_path)
+        os.chdir(version_path)
 
-        if not os.path.exists(generation):
-            os.makedirs(generation)
-        os.chdir(generation)
-
-        game = Game(False)
-        game.run_with_encode(1000)
+        if not os.path.exists(generation_path):
+            os.makedirs(generation_path)
+        os.chdir(generation_path)
 
     except OSError:
         print("Failed to create directory")
+        exit(-1)
+
+    game = Game(False, 1, 1)
+    game.run_with_encode(1000)
