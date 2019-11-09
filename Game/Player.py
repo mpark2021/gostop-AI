@@ -26,6 +26,12 @@ class Player:
         self._cards.remove(card)
         return card
 
+    def find_index(self, m, i):
+        for index, card in enumerate(self._cards):
+            if (m, i) == card.get_raw():
+                return index
+        print("CANNOT FIND CARD %d/%d" % (m, i))
+        return 0
 
 if __name__ == "__main__":
     from Game.Library import Library
