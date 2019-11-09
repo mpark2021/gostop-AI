@@ -15,7 +15,7 @@ if __name__ =="__main__":
     data = np.random.random((1, 48*4))
     data = data.round()
     x = tf.convert_to_tensor(data, dtype=tf.float32)
-    y = forward("Version1/Model", "Version1/Weight", x)
+    y = forward("Version1/Model", "Version1/Weights", x)
     print(y)
     value = keras.backend.eval(y)
     print(value * np.split(data, [48,], 1)[0])
