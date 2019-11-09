@@ -2,7 +2,7 @@ import keras
 from Model.BaseModel import BaseModel
 
 
-class Model_Version1(BaseModel):
+class Model(BaseModel):
     def define_model(self) -> keras.Model:
         model = keras.Sequential(
             [
