@@ -3,7 +3,7 @@ from Game.Board import Board
 from Game.Player import Player
 from Game.Card import Card
 from Game.Score import Score
-from Game.AI import AI
+from Game.AI_random import AI_random
 import random
 from Game.Encoder import Encoder
 from Game.calculator import Calculator
@@ -89,7 +89,7 @@ class Game:
                 if self._turn_side == 0 and self._is_user:
                     played_card = self.user_input()
                 else:
-                    played_card = AI.play(self._players[self._turn_side], self._board)
+                    played_card = AI_random.play(self._players[self._turn_side], self._board)
             drew = self._library.draw()
 
             if played_card is not None:
@@ -162,7 +162,7 @@ class Game:
         else:
             is_last = len(self._library) <= 2
             opp_go = self._scores[self._get_opp()].get_go_count() > 0
-            return AI.ask_go(is_last, opp_go)
+            return AI_random.ask_go(is_last, opp_go)
 
     def user_input(self) -> Card:
         try:
@@ -211,7 +211,7 @@ class Game:
                     if self._turn_side == 0 and self._is_user:
                         selected = int(input("Choose one card: "))
                     else:
-                        selected = AI.select(match)
+                        selected = AI_random.select(match)
                     scored.append(match[selected])
 
         self._scores[self._turn_side].add(scored)
@@ -220,11 +220,16 @@ class Game:
 
 if __name__ == "__main__":
     import os
-    version = "version1"
+    version = "Version1"
+    generation = "Generation0"
     try:
         if not os.path.exists(version):
             os.makedirs(version)
         os.chdir(version)
+
+        if not os.path.exists(generation):
+            os.makedirs(generation)
+        os.chdir(generation)
 
         game = Game(False)
         game.run_with_encode(1000)
