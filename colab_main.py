@@ -7,16 +7,14 @@ def game_main(version, generation, num_iter=1000):
     from Game.game import Game
 
     version_path = "Game/Version%d" % version
-    generation_path = "Generation%d" % generation
+    generation_path = version_path + "/Generation%d" % generation
 
     try:
         if not os.path.exists(version_path):
             os.makedirs(version_path)
-            os.chdir(version_path)
 
         if not os.path.exists(generation_path):
             os.makedirs(generation_path)
-            os.chdir(generation_path)
 
     except OSError:
         print("Failed to create directory")
