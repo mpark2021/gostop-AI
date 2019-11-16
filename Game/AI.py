@@ -34,7 +34,7 @@ class AI:
         return AI_random.ask_go(is_last, opp_go)
 
     def _load_model(self, version, generation):
-        path = "../../../Model/Version%d/Generation%d" % (version, generation)
+        path = "Version%d/Generation%d" % (version, generation)
         model_path = path + "/Model"
         weights_path = path + "/Weights"
 
