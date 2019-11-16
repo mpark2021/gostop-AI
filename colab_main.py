@@ -29,12 +29,12 @@ def game_main(version, generation, num_iter=1000):
 def model_main(version, generation, epoch):
     from Model.Version1 import Model
     import Model.utils as utils
-    x_train, y_train, x_eval, y_eval = utils.parse("../Game/Version1%d/Generation0%d" % (version, generation))
+    x_train, y_train, x_eval, y_eval = utils.parse("../Game/Version%d/Generation%d" % (version, generation))
     model = Model()
     m = model.run(x_train, y_train, x_eval, y_eval, epochs=epoch)
 
-    version_folder_name = "Version1" + str(version)
-    folder_name = "Generation" + str(generation)
+    version_folder_name = "Version" + str(version)
+    folder_name = "Generation" + str(generation + 1)
     try:
         if not os.path.exists(version_folder_name):
             os.mkdir(version_folder_name)
