@@ -19,7 +19,7 @@ def main():
         from Game.game import Game
 
         version_path = "Game/Version%d" % version
-        generation_path = "Game/Generation%d" % generation
+        generation_path = "Generation%d" % generation
 
         try:
             if not os.path.exists(version_path):
@@ -41,7 +41,7 @@ def main():
             num_iter = 1000
         game.run_with_encode(num_iter)
 
-        
+
 
 
 if __name__ =="__main__":
