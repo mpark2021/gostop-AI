@@ -107,7 +107,7 @@ venv.bak/
 .DS_Store
 
 # data
-/Game/version*
+/Game/Version*
 
 # pycharm .idea
 .idea
