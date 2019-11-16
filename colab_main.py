@@ -65,7 +65,7 @@ def main():
             num_iter = 1000
         game_main(version, generation, num_iter)
 
-    elif sys.argv[1] in ["M", "Mode", "m", "mode"]:
+    elif sys.argv[1] in ["M", "Model", "m", "model"]:
         if len(sys.argv) == 5:
             epoch = int(sys.argv[4])
         else:
