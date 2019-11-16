@@ -29,7 +29,7 @@ def game_main(version, generation, num_iter=1000):
 def model_main(version, generation, epoch):
     from Model.Version1 import Model
     import Model.utils as utils
-    x_train, y_train, x_eval, y_eval = utils.parse("../Game/Version%d/Generation%d" % (version, generation))
+    x_train, y_train, x_eval, y_eval = utils.parse("Game/Version%d/Generation%d" % (version, generation))
     model = Model()
     m = model.run(x_train, y_train, x_eval, y_eval, epochs=epoch)
 
