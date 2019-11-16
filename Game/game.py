@@ -64,7 +64,13 @@ class Game:
         self._board_record = []
         self._played_record = []
 
+
+        current = 0
+        print(str(current) + "%")
         for i in range(num_iter):
+            if (i * 100 // num_iter) > current:
+                current = (i * 100) // num_iter
+                print(str(current) + "%")
             self._reset()
             self.run()
 
