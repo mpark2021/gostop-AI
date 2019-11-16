@@ -52,7 +52,7 @@ def main():
     if argc < 4:
         print("Usage")
         print("[G|Game|g|game] version generation num_iter")
-        print("[M|Mode|m|mode] version generation epoch=1000")
+        print("[M|Model|m|model] version generation epoch=1000")
         return
 
     version = int(sys.argv[2])
@@ -71,6 +71,8 @@ def main():
         else:
             epoch = 1000
         model_main(version, generation, epoch)
+    else:
+        print("Unknown command: " + sys.argv[1])
 
 
 if __name__ =="__main__":
