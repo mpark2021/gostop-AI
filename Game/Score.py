@@ -26,9 +26,10 @@ class Score:
     def add(self, cards):
         for card in cards:
             m, t = card.get()
-            self._cards[t].append(card)
-            if m == 8 and t == 2:
-                self._nine_gut = card
+            if card not in self._cards[t]:
+                self._cards[t].append(card)
+                if m == 8 and t == 2:
+                    self._nine_gut = card
 
     def get(self, t):
         return self._cards[t].copy()
