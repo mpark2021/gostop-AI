@@ -3,6 +3,7 @@ from Game.Encoder import Encoder
 import keras
 import numpy as np
 import tensorflow as tf
+import copy
 
 class AI:
     def __init__(self, version, generation):
@@ -14,7 +15,7 @@ class AI:
         if self.use_random:
             return AI_random.play(player, board)
         else:
-            encoded = Encoder.encode(player, board, my_score, opp_score)
+            encoded = Encoder.encode(player, board, copy.deepcopy(my_score), copy.deepcopy(opp_score))
             data = np.asarray([encoded])
             x = tf.convert_to_tensor(data, dtype=tf.float32)
             result = self.model(x)
