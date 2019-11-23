@@ -9,6 +9,29 @@ class Card:
     def __str__(self):
         return "[%d월, %s]" % (self._month, Const.types[self._type])
 
+    def __eq__(self, other):
+        return self._month == other._month and self._index == self._index
+
+    def __lt__(self, other):
+        if self._month < other._month:
+            return True
+        elif self._month == other._month:
+            if self._index < other._index:
+                return True
+        return False
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __le__(self, other):
+        return self == other or self < other
+
+    def __gt__(self, other):
+        return other < self
+
+    def __ge__(self, other):
+        return other < self or other == self
+
     def get(self):
         t = (self._month, self._type)  # tuple!!!
         return t
