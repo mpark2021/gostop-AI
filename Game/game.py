@@ -13,15 +13,16 @@ import keras.backend as K
 
 
 class Game:
-    def __init__(self, is_user=True, current_version=1, current_generation=0):
+    def __init__(self, is_user=True, current_version=1, current_generation=0, filepath="/Version1/Generation0"):
         self._board_record = []
         self._played_record = []
 
         self.cv = current_version
         self.cg = current_generation
         self._is_user = is_user
-        self._x_filename = "x_game.txt"
-        self._y_filename = "y_game.txt"
+        self._filepath = filepath
+        self._x_filename = "/x_game.txt"
+        self._y_filename = "/y_game.txt"
 
         self._reset()
 
@@ -64,21 +65,20 @@ class Game:
         self._board_record = []
         self._played_record = []
 
-
         current = 0
         print(str(current) + "%")
         for i in range(num_iter):
-            if (i * 100 // num_iter) > current:
+            if ((i * 100) // num_iter) > current:
                 current = (i * 100) // num_iter
                 print(str(current) + "%")
             self._reset()
             self.run()
 
-        with gzip.open(self._x_filename, "wb") as f:
+        with gzip.open(self._filepath + self._x_filename, "wb") as f:
             for line in self._board_record:
                 f.write(line.encode())
 
-        with gzip.open(self._y_filename, "wb") as f:
+        with gzip.open(self._filepath + self._y_filename, "wb") as f:
             for played in self._played_record:
                 f.write((str(played) + "\n").encode())
 
