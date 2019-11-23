@@ -20,7 +20,7 @@ def game_main(version, generation, num_iter=1000):
         print("Failed to create directory")
         exit(-1)
 
-    game = Game(False, version, generation)
+    game = Game(False, version, generation, filepath=generation_path)
     game.run_with_encode(num_iter)
 
 
