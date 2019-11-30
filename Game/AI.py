@@ -13,7 +13,7 @@ class AI:
 
     def play(self, player, board, my_score, opp_score):
         if self.use_random:
-            return AI_random.play(player, board)
+            return AI_random.play(player, board, my_score, opp_score)
         else:
             encoded = Encoder.encode(player, board, copy.deepcopy(my_score), copy.deepcopy(opp_score))
             data = np.asarray([encoded])
