@@ -42,8 +42,22 @@ class AI_random:
                 score -= 1000
             elif updated_opp_jum > opp_jum:
                 score -= 100
+        recurrent_score.append(score)
 
-            recurrent_score.append(score)
+        for i, card in enumerate(cards):
+            potential_point = 0
+            recurrent_score.append(potential_point)
+            potential_score = []
+            for idx in range(4):
+                potential_score.append(Card(card._month, idx))
+            ms.add(cards)
+            updated_my_jum = sum(Calculator.calculate(ms))
+
+            if my_jum < updated_my_jum:
+                potential_point -= 10*(21-(2*len(player._cards)))
+        recurrent_score.append(potential_point)
+
+
 
         m = max(recurrent_score)
         selected = [i for i, v in enumerate(recurrent_score) if v == m]
