@@ -13,11 +13,11 @@ class BaseModel:
 
         def select_accuracy(y_true, y_pred):
 
-            return Model.utils.select_accuracy_internal(x_train, y_true, y_pred, keras.metrics.categorical_accuracy)
+            return Model.utils.select_accuracy_internal(x_train, y_true, y_pred, keras.metrics.categorical_crossentropy)
 
         def select_accuracy_eval(y_true, y_pred):
 
-            return Model.utils.select_accuracy_internal(x_eval, y_true, y_pred, keras.metrics.categorical_accuracy)
+            return Model.utils.select_accuracy_internal(x_eval, y_true, y_pred, keras.metrics.categorical_crossentropy)
 
         model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy", select_accuracy])
 
