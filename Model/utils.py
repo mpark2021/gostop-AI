@@ -35,8 +35,8 @@ def parse(dir):
 
 def select_accuracy_internal(x, y, y_pred, accuracy):
     x_hand = np.split(x, [48, ], 1)[0]
-    x_hand = tf.convert_to_tensor(x_hand, dtype=tf.float64)
-    y_pred = tf.convert_to_tensor(y_pred, dtype=tf.float64)
+    x_hand = tf.convert_to_tensor(x_hand, dtype=tf.float32)
+    y_pred = tf.convert_to_tensor(y_pred, dtype=tf.float32)
     y_pred_hand = tf.math.multiply(x_hand, y_pred)
     return accuracy(y, y_pred_hand)
 
