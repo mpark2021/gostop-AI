@@ -10,7 +10,7 @@ class Card:
         return "[%d월, %s]" % (self._month, Const.types[self._type])
 
     def __eq__(self, other):
-        return self._month == other._month and self._index == self._index
+        return self._month == other._month and self._index == other._index
 
     def __lt__(self, other):
         if self._month < other._month:
