@@ -19,11 +19,11 @@ class BaseModel:
 
             return Model.utils.select_accuracy_internal(x_eval, y_true, y_pred, keras.metrics.categorical_crossentropy)
 
-        model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy", select_accuracy])
+        model.compile(optimizer="adam", loss=Model.utils.f1_expand_loss, metrics=["accuracy", Model.utils.f1])
 
         model.fit(x_train, y_train, batch_size=x_train.shape[0], epochs=epochs)
 
-        model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy", select_accuracy_eval])
+        #model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy", select_accuracy_eval])
 
         print(model.evaluate(x_eval, y_eval, batch_size=x_eval.shape[0]))
 
