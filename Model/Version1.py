@@ -8,7 +8,8 @@ class Model(BaseModel):
             [
                 keras.layers.Dense(32, input_dim=48 * 4, activation="sigmoid"),
                 keras.layers.Dense(64, activation="sigmoid"),
-                keras.layers.Dense(48, activation="sigmoid")
+                keras.layers.Dense(128, activation="sigmoid"),
+                keras.layers.Dense(256, activation="sigmoid")
             ]
         )
         return model
