@@ -38,10 +38,10 @@ def parse(dir):
 def f1(y_true, y_pred):
     y_pred = K.round(y_pred)
 
-    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
-    tn = K.sum(K.cast((1 - y_true) * (1 - y_pred), 'float'), axis=0) / 47.0
-    fp = K.sum(K.cast((1 - y_true) * y_pred, 'float'), axis=0) / 47.0
-    fn = K.sum(K.cast(y_true * (1 - y_pred), 'float'), axis=0)
+    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=1)
+    tn = tf.divide(K.sum(K.cast((1 - y_true) * (1 - y_pred), 'float'), axis=1), 47.0)
+    fp = tf.divide(K.sum(K.cast((1 - y_true) * y_pred, 'float'), axis=1), 47.0)
+    fn = K.sum(K.cast(y_true * (1 - y_pred), 'float'), axis=1)
 
     p = tp / ((tp + fp) + K.epsilon())
     r = tp / ((tp + fn) + K.epsilon())
@@ -52,10 +52,10 @@ def f1(y_true, y_pred):
 
 
 def f1_expand_loss(y_true, y_pred):
-    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
-    tn = K.sum(K.cast((1-y_true) * (1-y_pred), 'float'), axis=0) / 47.0
-    fp = K.sum(K.cast((1-y_true) * y_pred, 'float'), axis=0) / 47.0
-    fn = K.sum(K.cast(y_true * (1-y_pred),'float'), axis=0)
+    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=1)
+    tn = tf.divide(K.sum(K.cast((1 - y_true) * (1 - y_pred), 'float'), axis=1), 47.0)
+    fp = tf.divide(K.sum(K.cast((1 - y_true) * y_pred, 'float'), axis=1), 47.0)
+    fn = K.sum(K.cast(y_true * (1-y_pred),'float'), axis=1)
 
     p = tp / ((tp+fp) + K.epsilon())
     r = tp / ((tp+fn) + K.epsilon())
