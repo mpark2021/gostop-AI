@@ -1,6 +1,7 @@
 import numpy as np
 import gzip
 import tensorflow as tf
+import keras.backend as K
 
 def parse(dir):
     x = []
@@ -32,6 +33,45 @@ def parse(dir):
     y_eval = np.asarray(y[divider:])
 
     return x_train, y_train, x_eval, y_eval
+
+
+def f1(y_true, y_pred):
+    y_pred = K.round(y_pred)
+
+    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
+    tn = K.sum(K.cast((1 - y_true) * (1 - y_pred), 'float'), axis=0) / 47.0
+    fp = K.sum(K.cast((1 - y_true) * y_pred, 'float'), axis=0) / 47.0
+    fn = K.sum(K.cast(y_true * (1 - y_pred), 'float'), axis=0)
+
+    p = tp / ((tp + fp) + K.epsilon())
+    r = tp / ((tp + fn) + K.epsilon())
+    f1 = (2 * p * r) / (p + r + K.epsilon())
+    f1 = tf.where(tf.is_nan(f1), tf.zeros_like(f1), f1)
+
+    return 1 - K.mean(f1)
+
+
+def f1_expand_loss(y_true, y_pred):
+    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
+    tn = K.sum(K.cast((1-y_true) * (1-y_pred), 'float'), axis=0) / 47.0
+    fp = K.sum(K.cast((1-y_true) * y_pred, 'float'), axis=0) / 47.0
+    fn = K.sum(K.cast(y_true * (1-y_pred),'float'), axis=0)
+
+    p = tp / ((tp+fp) + K.epsilon())
+    r = tp / ((tp+fn) + K.epsilon())
+    f1 = (2 * p * r) / (p + r + K.epsilon())
+    f1 = tf.where(tf.is_nan(f1), tf.zeros_like(f1), f1)
+
+    return 1-K.mean(f1)
+
+
+def select_f1_metrix(x, y, y_pred, accuracy):
+    x_hand = np.split(x, [48, ], 1)[0]
+    x_hand = tf.convert_to_tensor(x_hand, dtype=tf.float32)
+    y_pred = tf.convert_to_tensor(y_pred, dtype=tf.float32)
+    y_pred_hand = tf.math.multiply(x_hand, y_pred)
+    return accuracy(y, y_pred_hand)
+
 
 def select_accuracy_internal(x, y, y_pred, accuracy):
     x_hand = np.split(x, [48, ], 1)[0]
